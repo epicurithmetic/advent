@@ -53,7 +53,6 @@ while i < number_of_groups:
     groups.append(group)
     i+=1
 
-print(groups)
 # initialise badge priorities
 badge_priorities = 0
 
