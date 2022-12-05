@@ -4,14 +4,14 @@
 data_file = open("day05-data.txt","r")
 data_raw = data_file.read()
 data_file.close()
-
 data_raw = data_raw.split()
 
+# Clean up the stacks data.
 stacks_raw = data_raw[0]
-instructions_raw = data_raw[1]
 
 
 
+# Clean up the instructions data.
 def extract_instruction(raw_instruction):
 
     """
@@ -32,6 +32,13 @@ def extract_instruction(raw_instruction):
 
     return instruction
 
+
+# Use this method to clean up the instructions. 
+instructions_raw = data_raw[1]
+instructions_raw = instructions_raw.split("\n")
+instructions = [extract_instruction(x) for x in instructions_raw]
+
+# Method to grab the crates from a stack ready to append to another stack.
 def crates_to_move(number_of_crates,stack):
 
     """
@@ -43,7 +50,9 @@ def crates_to_move(number_of_crates,stack):
     
     """
 
+    # Grab the crates.
     top_crates = stack[-number_of_crates:]
+    # Reverse them to get the correct order: crane takes one at a time. 
     top_crates.reverse()
 
     return top_crates
