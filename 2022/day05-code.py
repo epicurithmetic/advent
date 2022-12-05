@@ -4,10 +4,25 @@
 data_file = open("day05-data.txt","r")
 data_raw = data_file.read()
 data_file.close()
-data_raw = data_raw.split()
+data_raw = data_raw.split("\n\n")
 
 # Clean up the stacks data.
 stacks_raw = data_raw[0]
+stacks_raw = stacks_raw.split("\n")
+stacks_raw = [:-1] # Remove the line 1 2 3 4 ... 
+
+stacks = [[],[],[],
+           [],[],[],
+           [],[],[]]
+
+
+#for row in stacks_raw:
+    # i = 0
+    # while i < 9:
+        #stacks[i] = row[i:i+4]
+
+
+
 
 
 
