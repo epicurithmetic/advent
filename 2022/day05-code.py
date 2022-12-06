@@ -9,111 +9,78 @@ data_raw = data_raw.split("\n\n")
 # Clean up the stacks data.
 stacks_raw = data_raw[0]
 stacks_raw = stacks_raw.split("\n")
-stacks_raw = [:-1] # Remove the line 1 2 3 4 ... 
+stacks_raw = stacks_raw[:-1] # Remove the line 1 2 3 4 ... 
+stacks_raw.reverse()
 
+number_of_stacks = 9
+stacks = []
+i = 0
+while i < 9: 
+    stacks.append([])
+    i += 1
 
+number_of_levels = len(stacks_raw)
+level = 0 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Populate the stacks into a list. 
-# stacks = [[],[],[],
-#            [],[],[],
-#            [],[],[]]
-
-# for row in stacks_raw:
-#     #print(row)
-#     i = 0
-#     while i < len(stacks_raw)+1:
+while level < number_of_levels:
+    
+    stack = 0
+    while stack < 9:
+        crate = stacks_raw[level][:4]
+        stacks_raw[level] = stacks_raw[level][4:]
         
-#         crate = row[i*4:(i*4)+3]
+        if not (crate == "    " or crate == "   "):
+            stacks[stack].append(crate)
 
-#         if not crate == "   ": 
-#             stacks[i].append(crate)
-#         i += 1
+        stack += 1
+    level += 1
 
+# Clean up the instructions data.
+def extract_instruction(raw_instruction):
 
+    """
+        Take string of form: 
 
-# # Clean up the instructions data.
-# def extract_instruction(raw_instruction):
+        move 5 from 3 to 6
 
-#     """
-#         Take string of form: 
-
-#         move 5 from 3 to 6
-
-#         return list [5,3,6]
+        return list [5,3,6]
     
-#     """
+    """
 
-#     raw_instruction = raw_instruction.split(" ")
-#     raw_instruction.remove("move")
-#     raw_instruction.remove("from")
-#     raw_instruction.remove("to")
+    raw_instruction = raw_instruction.split(" ")
+    raw_instruction.remove("move")
+    raw_instruction.remove("from")
+    raw_instruction.remove("to")
 
-#     instruction = [int(x) for x in raw_instruction]
+    instruction = [int(x) for x in raw_instruction]
 
-#     return instruction
-
-
-# # Use this method to clean up the instructions. 
-# # instructions_raw = data_raw[1]
-# # instructions_raw = instructions_raw.split("\n")
-# # instructions = [extract_instruction(x) for x in instructions_raw]
-
-# # Method to grab the crates from a stack ready to append to another stack.
-# def crates_to_move(number_of_crates,stack):
-
-#     """
-#         Take "number_of_crates" from stack_one (list)
-#         and return that list in reverse. 
+    return instruction
 
 
-#         3, [1,2,3,4,5,6] => [6,5,4]
+# Use this method to clean up the instructions. 
+instructions_raw = data_raw[1]
+instructions_raw = instructions_raw.split("\n")
+instructions = [extract_instruction(x) for x in instructions_raw]
+
+
+# Do the moving
+for instruction in instructions:
     
-#     """
+    number_to_move = instruction[0]
+    from_stack = instruction[1]-1
+    to_stack = instruction[2]-1
 
-#     # Grab the crates.
-#     top_crates = stack[-number_of_crates:]
-#     # Reverse them to get the correct order: crane takes one at a time. 
-#     top_crates.reverse()
+    crates = stacks[from_stack][-number_to_move:]
+    stacks[from_stack] = stacks[from_stack][:-number_to_move]
 
-#     return top_crates
+    # Part Two just required this line to be commented out. 
+    #crates.reverse()  
 
-# # Find stack to pop end off. Reverse that. Append it to the new stack.
+    stacks[to_stack] = stacks[to_stack] + crates
+
+
+for stack in stacks:
+    print(stack[-1])
+
+
 
