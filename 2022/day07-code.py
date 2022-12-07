@@ -1,7 +1,7 @@
 # Advent of Code 2022 :: Day 07
 
 # Read in the data from terminal. 
-terminal_file = open("day07-testdata.txt","r")
+terminal_file = open("day07-data.txt","r")
 terminal_raw = terminal_file.read()
 terminal_file.close()
 
@@ -98,7 +98,7 @@ def update_file(command):
     """
 
     # Update in list of all directories.
-    directories[current_directory["name"]]["subdirectories"].append(command)
+    directories[current_directory["name"]]["files"].append(command)
 
 
 # Now we can go through all the lines in the terminal readout
@@ -110,15 +110,57 @@ for line in terminal_readout:
     elif line[:4] == "$ cd":
         # Change directory command.
         change_directory(line)
-        print("cd into " + line[4:])
+        #print("cd into " + line[4:])
     elif line[:3] == "dir":
         # New directory
         record_directory(line)
-        print("directory " + line[4:] + " recorded.")
+        directories[current_directory["name"]]["subdirectories"].append(line[4:])
+        #print("directory " + line[4:] + " recorded.")
     else:
         # Remaining line is a file. 
         update_file(line)
-        print("File " + line + " recorded in " + current_directory["name"])
+        #print(directories[current_directory["name"]]["files"])
+        #print("File " + line + " recorded in " + current_directory["name"])
 
+def file_size(file_name):
 
+    return int(file_name.split(" ")[0])
 
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
+# With the directory structure stored, it remains to determine the size of 
+# each directory. 
+
+def update_directory_size(directory):
+
+    # First account for the files in the immediate directory.
+    files_in_directory = directories[directory]["files"]
+    file_sum = 0
+    for file in files_in_directory:
+        #directories[directory]["size"] += file_size(file)
+        file_sum += file_size(file)
+    
+    # Next account for files in subdirectories.
+    sub_directories = directories[directory]["subdirectories"]
+    
+    sub_directory_total = 0
+
+    for sub in sub_directories:
+        sub_directory_total += update_directory_size(sub)
+    
+    return file_sum + sub_directory_total
+    
+
+for dir in directories.keys():
+    directories[dir]["size"] = update_directory_size(dir)
+    print("Directory " + directories[dir]["name"] + " has size " + str(directories[dir]["size"]))
+
+answer = 0
+for dir in directories.keys():
+    if directories[dir]["size"] <= 100000:
+        print(directories[dir]["name"])
+        answer += directories[dir]["size"]
+
+print(answer)
