@@ -5,7 +5,6 @@ data_file.close()
 data = list(data_raw[:-1])
 
 number_of_characters = 14 # Part Two: Change 4 to 14
-length_of_message = len(data)
 marker_found = False
 
 current_block = data[:14] # Part Two: Change 4 to 14
