@@ -14,7 +14,7 @@ while marker_found == False:
     if len(list(set(current_block))) == len(current_block):
         marker_found = True
         print(current_block)
-        print(number_of_characters)
+        print(number_of_characters) # Print answer now before increment.
         
     else:
         current_block = current_block[1:] + list(data[number_of_characters])
