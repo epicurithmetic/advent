@@ -1,7 +1,7 @@
 # Advent of Code 2022 :: Day 07
 
 # Read in the data from terminal. 
-terminal_file = open("day07-testData.txt","r")
+terminal_file = open("day07-testdata.txt","r")
 terminal_raw = terminal_file.read()
 terminal_file.close()
 
@@ -21,10 +21,11 @@ terminal_readout = terminal_raw.split("\n")
 # This dictionary is to store all directories.
 directories = {
     "/" : {"name" : "/",
-            "parent" : None,
-            "files" : [],
-            "subdirectories" : []}
-            }
+           "parent" : None,
+           "files" : [],
+           "subdirectories" : [],
+           "size" : 0}
+           }
 
 # This dictionary keeps track of current place in file system.
 current_directory = {
@@ -64,8 +65,21 @@ def change_directory(command):
         current_directory["parent"] = current_directory["name"]
         current_directory["name"] = new_directory
 
+def record_directory(command):
 
+    """
+        This method writes new directories to the dictionary.
 
+    """
+
+    new_name = command[4:]
+
+    directories[new_name] = {"name" : new_name,
+                             "parent" : current_directory["name"],
+                             "files" : [],
+                             "subdirectories" : [],
+                             "size" : 0
+                             }   
 
 # This method will update the list of files using a file command.
 def update_file(command):
@@ -86,6 +100,25 @@ def update_file(command):
     # Update in list of all directories.
     directories[current_directory["name"]]["subdirectories"].append(command)
 
+
+# Now we can go through all the lines in the terminal readout
+# and start to build up the dictionary of 
+for line in terminal_readout:
+    
+    if line == "$ ls":
+        pass
+    elif line[:4] == "$ cd":
+        # Change directory command.
+        change_directory(line)
+        print("cd into " + line[4:])
+    elif line[:3] == "dir":
+        # New directory
+        record_directory(line)
+        print("directory " + line[4:] + " recorded.")
+    else:
+        # Remaining line is a file. 
+        update_file(line)
+        print("File " + line + " recorded in " + current_directory["name"])
 
 
 
