@@ -20,5 +20,4 @@ while marker_found == False:
     else:
         current_block = current_block[1:] + list(data[number_of_characters])
 
-
     number_of_characters += 1
