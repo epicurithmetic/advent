@@ -33,8 +33,6 @@ current_directory = {
     "parent" : None,
     }
 
-
-
 # This method uses a cd command to change the current directory.
 def change_directory(command):
 
@@ -78,9 +76,9 @@ def record_directory(command):
     """
 
     dir_to_append = command[4:]
-    new_name = current_directory["name"] + dir_to_append + "/"
+    new_dir_name = current_directory["name"] + dir_to_append + "/"
 
-    directories[new_name] = {"name" : new_name,
+    directories[new_dir_name] = {"name" : new_dir_name,
                              "parent" : current_directory["name"],
                              "files" : [],
                              "subdirectories" : [],
@@ -113,26 +111,21 @@ for line in terminal_readout:
     
     if line == "$ ls":
         pass
+
     elif line[:4] == "$ cd":
         # Change directory command.
         change_directory(line)
-        #print("cd into " + line[4:])
+        
     elif line[:3] == "dir":
         # New directory
         record_directory(line)
         sub_dir = current_directory["name"] + line[4:] +"/"
-        print(sub_dir)
-        print(directories)
-        print(directories[current_directory["name"]])
-        print(directories[current_directory["name"]]["subdirectories"])
         directories[current_directory["name"]]["subdirectories"].append(sub_dir)
-        #print("directory " + line[4:] + " recorded.")
+        
     else:
         # Remaining line is a file. 
         update_file(line)
-        #print(directories[current_directory["name"]]["files"])
-        #print("File " + line + " recorded in " + current_directory["name"])
-
+        
 def file_size(file_name):
 
     return int(file_name.split(" ")[0])
@@ -150,14 +143,13 @@ def update_directory_size(directory):
     files_in_directory = directories[directory]["files"]
     file_sum = 0
     for file in files_in_directory:
-        #directories[directory]["size"] += file_size(file)
+        
         file_sum += file_size(file)
     
     # Next account for files in subdirectories.
-    sub_directories = directories[directory]["subdirectories"]
-    
+    # This works by recursively working down the branches of the tree.
+    sub_directories = directories[directory]["subdirectories"]    
     sub_directory_total = 0
-
     for sub in sub_directories:
         sub_directory_total += update_directory_size(sub)
     
@@ -171,12 +163,31 @@ for dir in directories.keys():
 answer = 0
 for dir in directories.keys():
     if directories[dir]["size"] <= 100000:
-        print(directories[dir]["name"])
         answer += directories[dir]["size"]
 
 print(answer)
 
-# I think the problem is that I don't account for subdirectories having the 
-# same name as some anscestor directory. 
+# ---------------------------------------------------------------------------
+# ------------------------- Part Two ----------------------------------------
+# ---------------------------------------------------------------------------
 
-# Idea to fix: name directory using their full path to home. 
+total_space_used = directories["/"]["size"]
+difference = total_space_used - 30000000
+print(difference)
+
+min_sufficient_difference = 70000000
+min_sufficient_directory = ""
+
+for dir in directories.keys():
+
+    dir_size = directories[dir]["size"]
+    if (dir_size > difference) and (dir_size < min_sufficient_difference):
+        min_sufficient_difference = dir_size
+        min_sufficient_directory = directories[dir]
+        print(min_sufficient_directory["name"])
+
+print(min_sufficient_difference)
+print(min_sufficient_directory)
+# Incorrect Attempt 1 :: 31148261 /ltcqgnc/ [TOO BIG]
+
+
