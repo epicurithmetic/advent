@@ -181,5 +181,5 @@ for dir in directories.keys():
 print(min_sufficient_difference,min_sufficient_directory["name"])
 
 # Incorrect Attempt 1 :: 31148261 /ltcqgnc/ [TOO BIG]
-# Correct answer      :: 3696336
+# Correct answer      :: 3696336  /ltcqgnc/ngm/zdvj/hzzs/
 
