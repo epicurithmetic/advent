@@ -33,6 +33,8 @@ current_directory = {
     "parent" : None,
     }
 
+
+
 # This method uses a cd command to change the current directory.
 def change_directory(command):
 
@@ -61,7 +63,7 @@ def change_directory(command):
     else:
         # In this case we are going in one level.
         current_directory["parent"] = current_directory["name"]
-        current_directory["name"] = new_directory
+        current_directory["name"] += new_directory + "/"
 
 def record_directory(command):
 
@@ -71,9 +73,12 @@ def record_directory(command):
         However this will overwrite the record of any directory with the 
         same name! FUCK!
 
+        [X] :: Fixed by keeping track of path back to home. 
+
     """
 
-    new_name = command[4:]
+    dir_to_append = command[4:]
+    new_name = current_directory["name"] + dir_to_append + "/"
 
     directories[new_name] = {"name" : new_name,
                              "parent" : current_directory["name"],
@@ -115,7 +120,12 @@ for line in terminal_readout:
     elif line[:3] == "dir":
         # New directory
         record_directory(line)
-        directories[current_directory["name"]]["subdirectories"].append(line[4:])
+        sub_dir = current_directory["name"] + line[4:] +"/"
+        print(sub_dir)
+        print(directories)
+        print(directories[current_directory["name"]])
+        print(directories[current_directory["name"]]["subdirectories"])
+        directories[current_directory["name"]]["subdirectories"].append(sub_dir)
         #print("directory " + line[4:] + " recorded.")
     else:
         # Remaining line is a file. 
