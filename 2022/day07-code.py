@@ -70,6 +70,9 @@ def record_directory(command):
     """
         This method writes new directories to the dictionary.
 
+        However this will overwrite the record of any directory with the 
+        same name! FUCK!
+
     """
 
     new_name = command[4:]
