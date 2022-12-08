@@ -164,3 +164,6 @@ for dir in directories.keys():
         answer += directories[dir]["size"]
 
 print(answer)
+
+# I think the problem is that I don't account for subdirectories having the 
+# same name as some anscestor directory. 
