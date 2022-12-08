@@ -33,15 +33,13 @@ current_directory = {
     "parent" : None,
     }
 
-# This method uses a cd command to change the current directory
-# while also checking to see if the directory dictionary needs updating.
+# This method uses a cd command to change the current directory.
 def change_directory(command):
 
     """
         Things that happen when cd command made:
 
             [ ] :: Change the current directory.
-            [ ] :: Update the directory list. 
     
         command = $ cd <name>
     
@@ -170,3 +168,5 @@ print(answer)
 
 # I think the problem is that I don't account for subdirectories having the 
 # same name as some anscestor directory. 
+
+# Idea to fix: name directory using their full path to home. 
