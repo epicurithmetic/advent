@@ -158,22 +158,24 @@ def update_directory_size(directory):
 
 for dir in directories.keys():
     directories[dir]["size"] = update_directory_size(dir)
-    print("Directory " + directories[dir]["name"] + " has size " + str(directories[dir]["size"]))
+    #print("Directory " + directories[dir]["name"] + " has size " + str(directories[dir]["size"]))
 
 answer = 0
 for dir in directories.keys():
     if directories[dir]["size"] <= 100000:
         answer += directories[dir]["size"]
 
-print(answer)
+#print(answer)
 
 # ---------------------------------------------------------------------------
 # ------------------------- Part Two ----------------------------------------
 # ---------------------------------------------------------------------------
 
-total_space_used = directories["/"]["size"]
-difference = total_space_used - 30000000
-print(difference)
+total_size_root = directories["/"]["size"]
+total_unused = 70000000 - total_size_root
+total_to_remove = 30000000 - total_unused
+
+print(total_to_remove)
 
 min_sufficient_difference = 70000000
 min_sufficient_directory = ""
@@ -181,13 +183,13 @@ min_sufficient_directory = ""
 for dir in directories.keys():
 
     dir_size = directories[dir]["size"]
-    if (dir_size > difference) and (dir_size < min_sufficient_difference):
+    if (dir_size > total_to_remove) and (dir_size < min_sufficient_difference):
         min_sufficient_difference = dir_size
         min_sufficient_directory = directories[dir]
-        print(min_sufficient_directory["name"])
+        #print(min_sufficient_directory["name"])
 
-print(min_sufficient_difference)
-print(min_sufficient_directory)
+print(min_sufficient_difference,min_sufficient_directory["name"])
+
 # Incorrect Attempt 1 :: 31148261 /ltcqgnc/ [TOO BIG]
-
+# Correct answer      :: 3696336
 
